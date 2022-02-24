@@ -1,24 +1,50 @@
-import { Card, CardMedia, makeStyles } from "@material-ui/core";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  CircularProgress,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import useApiFetch from "../hooks/useApiFetch";
+import CountryDetailsCard from "./../components/CountryDetailsCard";
 
 const useStyle = makeStyles(() => ({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    width: "40px",
+  loading: {
+    margin: "200px",
   },
 }));
 
 const CountryDetails = () => {
+  const countryURL = "https://restcountries.com/v3.1/name/";
+
   const classes: ClassNameMap = useStyle();
   const countryName: string | undefined = useParams().name;
 
+  const { data, isLoading, error } = useApiFetch(countryURL, countryName);
+
+  useEffect(() => {
+    console.log(data?.[0]);
+  }, [data]);
+
   return (
-    <Card className={classes.root}>
-      <CardMedia component="img" src={""} alt="flag"></CardMedia>
-    </Card>
+    <div>
+      {error ? (
+        <>Error</>
+      ) : isLoading ? (
+        <div className={classes.loading}>
+          <CircularProgress size="100px"></CircularProgress>
+          <br />
+          Loading
+        </div>
+      ) : (
+        <CountryDetailsCard data={data?.[0]}></CountryDetailsCard>
+      )}
+    </div>
   );
 };
 

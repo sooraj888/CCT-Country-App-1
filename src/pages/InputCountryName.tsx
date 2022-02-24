@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function App() {
+function InputCountryName() {
   const navigate = useNavigate();
   const [countryName, setCountryName] = useState("");
   const handleOnFormSubmit = (e: any) => {
@@ -72,4 +72,4 @@ function App() {
   );
 }
 
-export default App;
+export default InputCountryName;

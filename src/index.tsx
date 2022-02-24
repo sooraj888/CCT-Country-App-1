@@ -1,12 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./pages/App";
+
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import NavigationBar from "./components/NavigationBar";
 import PageNotFound from "./pages/PageNotFound";
 import CountryDetails from "./pages/CountryDetails";
+import InputCountryName from "./pages/InputCountryName";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -20,7 +21,10 @@ ReactDOM.render(
       <NavigationBar />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<App />}></Route>
+          <Route
+            path="/"
+            element={<InputCountryName></InputCountryName>}
+          ></Route>
           <Route path="/:name" element={<CountryDetails></CountryDetails>} />
           <Route path="*" element={<PageNotFound></PageNotFound>} />
         </Routes>
