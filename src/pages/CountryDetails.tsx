@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useApiFetch from "../hooks/useApiFetch";
 import CountryDetailsCard from "./../components/CountryDetailsCard";
+import Error from "../utility/Error";
 
 const useStyle = makeStyles(() => ({
   loading: {
@@ -34,7 +35,7 @@ const CountryDetails = () => {
   return (
     <div>
       {error ? (
-        <>Error</>
+        <Error></Error>
       ) : isLoading ? (
         <div className={classes.loading}>
           <CircularProgress size="100px"></CircularProgress>
@@ -42,7 +43,7 @@ const CountryDetails = () => {
           Loading
         </div>
       ) : (
-        <CountryDetailsCard data={data?.[0]}></CountryDetailsCard>
+        <CountryDetailsCard countryData={data?.[0]}></CountryDetailsCard>
       )}
     </div>
   );

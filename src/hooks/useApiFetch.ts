@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 
 const useApiFetch = (url: string, value: string | undefined) => {
-  const [data, setData] = useState<string>("");
+  const [data, setData] = useState<any>("");
   const [error, setError] = useState(false);
   const [isLoading, setIsLaoading] = useState<boolean>(false);
 
@@ -13,6 +13,8 @@ const useApiFetch = (url: string, value: string | undefined) => {
         const resonce = await axios.get(url + value);
         if (resonce?.data) {
           setData(resonce?.data);
+        } else {
+          setError(true);
         }
       } catch (e) {
         setError(true);

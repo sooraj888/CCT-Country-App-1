@@ -4,13 +4,25 @@ import {
   CardContent,
   CardMedia,
   makeStyles,
+  Typography,
 } from "@material-ui/core";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useApiFetch from "../hooks/useApiFetch";
+import Error from "./../utility/Error";
 
 const useStyles = makeStyles(() => ({
   root: {
     margin: "10px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    borderRadius: "10px",
+  },
+  root2: {
+    marginTop: "100px",
+    minWidth: "400px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -32,45 +44,121 @@ const useStyles = makeStyles(() => ({
   btn: {
     width: "100%",
   },
+  rootweather: {
+    display: "flex",
+    justifyContent: "space-evenly",
+  },
+  icon: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: "20%",
+  },
 }));
 
-const CountryDetailsCard = ({ data }: any) => {
+const CountryDetailsCard = ({ countryData }: any) => {
+  const navigate = useNavigate();
+
+  const weatherURL =
+    "http://api.weatherstack.com/current?access_key=78ae6ba411469f63795fe8974e0e3a45&query=";
+
+  const capitalName = countryData?.name?.common;
+
+  const { data } = useApiFetch(weatherURL, capitalName);
+
+  console.log(data);
+
+  const [showWeatherData, setShowWeatherDadta] = useState(false);
+
   const classes: ClassNameMap = useStyles();
 
   const handleOnClick = () => {
-    console.log("click");
+    setShowWeatherDadta(true);
+  };
+
+  const handleOnClickBackButton = () => {
+    navigate("/");
   };
 
   return (
-    <Card className={classes.root}>
-      <CardMedia
-        component={"img"}
-        className={classes.img}
-        src={data?.flags?.png}
-        alt="flag"
-      ></CardMedia>
-      <CardContent className={classes.title}>Country</CardContent>
-      <CardContent className={classes.subTitle}>
-        {data?.name?.common}
-      </CardContent>
-      <CardContent className={classes.title}>Capital</CardContent>
-      <CardContent className={classes.subTitle}>{data?.capital}</CardContent>
-      <CardContent className={classes.title}>Population</CardContent>
-      <CardContent className={classes.subTitle}>{data?.population}</CardContent>
-      <CardContent className={classes.title}>Lat-Lng</CardContent>
-      <CardContent className={classes.subTitle}>
-        {data?.latlng?.[0]}-{data?.latlng?.[1]}
-      </CardContent>
+    <>
+      {!showWeatherData ? (
+        <Card className={classes.root}>
+          <CardMedia
+            component={"img"}
+            className={classes.img}
+            src={countryData?.flags?.png}
+            alt="flag"
+          ></CardMedia>
+          <CardContent className={classes.title}>Country</CardContent>
+          <CardContent className={classes.subTitle}>
+            {countryData?.name?.common}
+          </CardContent>
+          <CardContent className={classes.title}>Capital</CardContent>
+          <CardContent className={classes.subTitle}>
+            {countryData?.capital}
+          </CardContent>
+          <CardContent className={classes.title}>Population</CardContent>
+          <CardContent className={classes.subTitle}>
+            {countryData?.population}
+          </CardContent>
+          <CardContent className={classes.title}>Lat-Lng</CardContent>
+          <CardContent className={classes.subTitle}>
+            {countryData?.latlng?.[0]}-{countryData?.latlng?.[1]}
+          </CardContent>
 
-      <Button
-        variant={"contained"}
-        className={classes.btn}
-        color="primary"
-        onClick={handleOnClick}
-      >
-        Capital Weather
-      </Button>
-    </Card>
+          <Button
+            variant={"contained"}
+            className={classes.btn}
+            color="primary"
+            onClick={handleOnClick}
+          >
+            Capital Weather
+          </Button>
+        </Card>
+      ) : (
+        <>
+          {data === "" ? (
+            <Error />
+          ) : (
+            <Card className={classes.root2}>
+              <div className={classes.rootweather}>
+                <CardContent>
+                  <Typography className={classes.title}>Location</Typography>
+                  <Typography className={classes.subTitle}>
+                    {data?.location?.name}
+                  </Typography>
+                  <Typography className={classes.title}>Temperature</Typography>
+                  <Typography className={classes.subTitle}>
+                    {data?.current?.temperature}
+                  </Typography>
+                </CardContent>
+                <div className={classes.icon}>
+                  <CardMedia
+                    component="img"
+                    image={data?.current?.weather_icons?.[0]}
+                    alt="weather icon"
+                  ></CardMedia>
+                  <Typography className={classes.subTitle}>
+                    {data?.current?.weather_descriptions[0]}
+                  </Typography>
+                </div>
+              </div>
+
+              <Button
+                variant="contained"
+                onClick={handleOnClickBackButton}
+                color="primary"
+                className={classes.btn}
+              >
+                Search another country
+              </Button>
+            </Card>
+          )}
+        </>
+      )}
+    </>
   );
 };
 
