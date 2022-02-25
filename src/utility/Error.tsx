@@ -2,7 +2,7 @@ import { Button, Card, CardContent } from "@material-ui/core";
 import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
-import { useNavigate } from "react-router-dom";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 const useStlye = makeStyles(() => ({
   root: {
@@ -15,15 +15,15 @@ const useStlye = makeStyles(() => ({
 const Error = () => {
   const classes: ClassNameMap = useStlye();
 
-  const navigate = useNavigate();
-  const handleOnClick = () => {
+  const navigate: NavigateFunction = useNavigate();
+  const handleOnClick = (): void => {
     navigate("/");
   };
 
   return (
     <div className={classes.root}>
       <h1>Somthing Went Worng...</h1>
-      <Button variant="contained" onClick={handleOnClick}>
+      <Button variant="contained" color="secondary" onClick={handleOnClick}>
         Retry
       </Button>
     </div>

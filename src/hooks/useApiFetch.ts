@@ -1,16 +1,25 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import React, { useState, useEffect } from "react";
 
-const useApiFetch = (url: string, value: string | undefined) => {
+export type useApiFetchType = {
+  data: any;
+  error: boolean;
+  isLoading: boolean;
+};
+
+const useApiFetch = (
+  url: string,
+  value: string | undefined
+): useApiFetchType => {
   const [data, setData] = useState<any>("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<boolean>(false);
   const [isLoading, setIsLaoading] = useState<boolean>(false);
 
   useEffect(() => {
-    const getData = async () => {
+    const getData = async (): Promise<any> => {
       try {
         setIsLaoading(true);
-        const resonce = await axios.get(url + value);
+        const resonce: AxiosResponse<any, any> = await axios.get(url + value);
         if (resonce?.data) {
           setData(resonce?.data);
         } else {

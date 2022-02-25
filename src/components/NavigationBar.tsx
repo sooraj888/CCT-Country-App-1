@@ -8,7 +8,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const NavigationBar = () => {
+const NavigationBar = (): JSX.Element => {
   const classes: ClassNameMap = useStyles();
 
   return (

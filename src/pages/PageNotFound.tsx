@@ -1,7 +1,7 @@
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 
 const useStyles = makeStyles((theme) => ({
@@ -13,10 +13,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PageNotFound = () => {
-  const navigate = useNavigate();
+const PageNotFound = (): JSX.Element => {
+  const navigate: NavigateFunction = useNavigate();
 
-  const handleOnBackButton = () => {
+  const handleOnBackButton = (): void => {
     navigate("/");
   };
 

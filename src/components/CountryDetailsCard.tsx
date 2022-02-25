@@ -8,8 +8,8 @@ import {
 } from "@material-ui/core";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import useApiFetch from "../hooks/useApiFetch";
+import { NavigateFunction, useNavigate } from "react-router-dom";
+import useApiFetch, { useApiFetchType } from "../hooks/useApiFetch";
 import Error from "./../utility/Error";
 
 const useStyles = makeStyles(() => ({
@@ -53,31 +53,31 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: "20%",
+    paddingTop: "10px",
   },
 }));
 
-const CountryDetailsCard = ({ countryData }: any) => {
-  const navigate = useNavigate();
+const CountryDetailsCard = ({ countryData }: any): JSX.Element => {
+  const navigate: NavigateFunction = useNavigate();
 
-  const weatherURL =
+  const weatherURL: string =
     "http://api.weatherstack.com/current?access_key=78ae6ba411469f63795fe8974e0e3a45&query=";
 
-  const capitalName = countryData?.name?.common;
+  const capitalName: string = countryData?.name?.common;
 
-  const { data } = useApiFetch(weatherURL, capitalName);
+  const { data }: useApiFetchType = useApiFetch(weatherURL, capitalName);
 
   console.log(data);
 
-  const [showWeatherData, setShowWeatherDadta] = useState(false);
+  const [showWeatherData, setShowWeatherDadta] = useState<boolean>(false);
 
   const classes: ClassNameMap = useStyles();
 
-  const handleOnClick = () => {
+  const handleOnClick = (): void => {
     setShowWeatherDadta(true);
   };
 
-  const handleOnClickBackButton = () => {
+  const handleOnClickBackButton = (): void => {
     navigate("/");
   };
 

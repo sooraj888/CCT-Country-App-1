@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import logo from "./logo.svg";
 
 import { Box, Button, Card, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
-import { useNavigate } from "react-router-dom";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -27,17 +27,19 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function InputCountryName() {
-  const navigate = useNavigate();
-  const [countryName, setCountryName] = useState("");
-  const handleOnFormSubmit = (e: any) => {
+function InputCountryName(): JSX.Element {
+  const navigate: NavigateFunction = useNavigate();
+  const [countryName, setCountryName] = useState<string>("");
+  const handleOnFormSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     navigate(`/${countryName}`);
   };
 
   const classes: ClassNameMap = useStyles();
 
-  const handleCountryInput = (e: any) => {
+  const handleonChangeCountryName = (
+    e: ChangeEvent<HTMLInputElement>
+  ): void => {
     setCountryName(e.target.value);
   };
 
@@ -58,7 +60,7 @@ function InputCountryName() {
         required
         placeholder="Enter Country Name"
         value={countryName}
-        onChange={handleCountryInput}
+        onChange={handleonChangeCountryName}
       ></input>
       <Button
         variant={"contained"}
